@@ -112,6 +112,21 @@ A 2D manifold is a 2D shape that can be bent and twisted in a higher-dimensional
 **Some matrix factorization methods have constraint that factor matrices (e.g. $G$ or $S$) must be orthogonal** - so the features/clusters are distinct. SemiNMF doesn't require this.
 :::
 
+## PCA
+- Used to find lower-dimensional subspace best representing the data
+- Done by identifying principal directions $Q$ and projecting the data points into this new subspace, giving principal components $U$
+- Goal is reconstructing $UQ^{\top}$ as closely to $X$ as possible, subject to $Q^{\top}Q=I$ (ensures orthogonality)
+- $U$ can be considered continuous analogue to the discrete membership indicators in k-means
+    - This is the basis for Laplacian embedding integration
+
+::: {.notes}
+Being = I means dot product of any pair in Q is 0: they're orthogonal.
+
+It's important that the principal directions are orthogonal, as they need to capture unique variance, without redundancy.
+
+$U$ being continuous analogue to discrete membership indicators in k-means basically just refers to the membership indicators in k-means being binary (in or not in cluster), whereas being continuous would make it partial membership.
+:::
+
 
 ## SemiNMF-PCA-CoClust {.smaller}
 Form matrix $M$ of size $(n+d)\times(n+d)$ from data $X$:
@@ -132,6 +147,10 @@ $$
 $$
 
 ::: {.notes}
+The optimization is about minimizing the Frobenius Norm of the difference between $M$ and the product $GSQ^{\top}$, subject to $G$ being non-negative and $Q^{\top}Q=I$ to ensure orthogonality in $Q$.
+
+**Frobenius norm** measures sum of squared differences between data and reconstruction.
+
 **G**:
 Since we work on document-term matrices, it would mean that k-means on $X$ is document clustering (document clusters is $G_{g}$) and on $X^{\top}$ is term clustering (term clusters is $G_{f}$).
 
