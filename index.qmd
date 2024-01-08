@@ -1,8 +1,8 @@
 ---
-title: "spMI Exam"
-subtitle: ""
-author: "Christian Bager Bach Houmann"
-date: 2023-09-22
+title: "SemiNMF-PCA framework for Sparse Data Co-clustering"
+subtitle: "@allabSemiNMFPCAFrameworkSparse2016 in CIKM <br/>Research Paper"
+author: "Presented by<br/>Christian Bager Bach Houmann @ AAU"
+date: 2024-01-09
 date-format: "D MMM YYYY"
 slide-number: true
 bibliography: static/references.bib
@@ -12,5 +12,211 @@ format:
         toc: false
 ---
 
-## Hello, world
+
+## The problem
+- Given a large set of documents and their content, how can we group them into topics *and* understand which terms are typically associated?
+- Existing methods struggle with the high-dimensionality and sparsity in document-term matrices, and they may not capture the underlying geometry in the data
+- Most clustering approaches only focus on documents *or* terms, but not both (unilateral clustering)
+- Using PCA and then k-means clustering (Tandem clustering) is discouraged because it may not reveal the true cluster structure
+
+**Proposed solution:** Integrating SemiNMF and PCA
+
+::: {.notes}
+It may not reveal the true cluster structure because the first few principal components of PCA may not reflect it.
+:::
+
+# Understanding the SemiNMF-PCA Framework for Sparse Data Co-clustering
+
+- Semi non-negative matrix factorization (SemiNMF)
+- Principal Component Analysis (PCA) for
+- Sparse data
+- Co-clustering
+
+## Sparse, High-Dimensional Data
+
+- **Sparse Data**: Dataset where most entries are zero or do not contain much information
+- **High Dimensionality**: Datasets with a large number of features (e.g., terms in text dataset)
+- **Key Challenges**:
+    - Difficulty in visualizing and understanding the structure
+    - Traditional clustering methods fall short in capturing the underlying patterns
+
+
+## Brief introduction to NMF and PCA
+
+- **Nonnegative Matrix Factorization (NMF)**:
+    - Decomposes data matrices into parts for easier interpretation
+    - Data must be non-negative
+- **Principal Component Analysis (PCA)**:
+    - Reduces dimensions while keeping the most important variability
+
+
+## Co-clustering
+
+- **What is Co-clustering?** 
+    - Simultaneous grouping of data points (e.g., documents) and features (e.g., terms).
+- **Why Co-clustering?**
+    - Often more effective than one-sided clustering, especially for sparse, high-dimensional data
+    - Co-clustering better than clustering on sparse data
+- **With matrix factorization**
+    - NMF for unilateral, then NMTF for co-clustering
+
+::: {.notes}
+NMTF creates a 3-factor decomposition - creates an approximation of the data matrix through:
+- a row-coefficient matrix,
+- a block value matrix,
+- and a column-coefficient matrix – all are nonnegative.
+
+The approximation is the product of these.
+:::
+
+## Co-clustering
+
+![Clustering vs. Co-clustering: @allabSemiNMFPCAFrameworkSparse2016](/static/images/clustering_vs_coclustering.png)
+
+
+## Matrix factorization based co-clustering algorithms
+- **Croeuc Algorithm**: Uses the principle of double k-means to perform co-clustering on continuous data
+- **Bipartite Spectral Graph Partitioning Algorithm (Spec)**: Designed to be sequel to Croeuc
+- **Information-Theoretic Co-clustering (ITCC)** 
+- **Spectral Co-clustering Algorithm (SpecCo)**: Appears to perform well on document clustering
+
+## Locality Preserving based Co-clustering
+- **Drawback of other methods:** they often overlook local manifold geometry because they mainly rely on global Euclidean geometry
+- **Dual Regularized Co-Clustering (DRCC)**: Combines NMTF with incorporating manifold structures in both sample and feature spaces. Limited in handling data with negative values and has high computational complexity.
+- **Locally Preserved Fast Nonnegative Matrix Tri-Factorization (LpFNMTF)**: Tries to reduce computational demands by enforcing constraints for factors to be cluster indicator matrices
+
+::: {.notes}
+A 2D manifold is a 2D shape that can be bent and twisted in a higher-dimensional space.
+
+**Generally, a $d$-dimensional manifold** is a part of an $n$-dimensional space (where $d<n$) that locally resembles a $d$-dimensional hyperplane.
+
+**Basically, "locally resembles"** means that near each point, it looks like it resembles such a plane. So while the whole thing may look 3D, near each point, it looks 2D.
+
+**Local Geometrical Structure**: This refers to the shape and connectivity of data points in a small, localized region of the dataset. It's about understanding how data points are arranged or connected to each other in a close neighborhood.
+:::
+
+## SemiNMF
+
+- Semi-nonnegative: 
+    - data $X$ and cluster centroids $S$ can be positive and negative, but
+    - cluster indicator matrix $G$ must be zero or positive: a data point has a non-negative degree of associatio with a cluster
+- Soft clustering: a point can have partial membership to a cluster
+<!-- - Does not require data factors ($G$ & $S$) to be orthogonal -->
+- Goal is to minimize difference between $X$ and $GS^{\top}$
+
+::: {.notes}
+**Cluster centroid** means a representative point that characterizes the central position / typical attribute of a cluster.
+
+**Cluster indicator** indicates soft (not binary) membership with clusters for the various points. Higher values means a point is more strongly associated with a given cluster.
+
+**Some matrix factorization methods have constraint that factor matrices (e.g. $G$ or $S$) must be orthogonal** - so the features/clusters are distinct. SemiNMF doesn't require this.
+:::
+
+
+## SemiNMF-PCA-CoClust
+Form matrix $M$ of size $(n+d)\times(n+d)$ from data $X$:
+$$
+M=\left[\begin{matrix}
+0 & X \\
+X^{\top} & 0
+\end{matrix}\right]
+$$
+
+- Create $G$ by doing k-means clustering on $X$ and $X^{\top}$ - represents cluster membership for both samples and features
+- Create $S$ from centroid matrices for samples and features
+- Create $Q$ from components reduced from SVD of $X$
+
+**Goal is minimizing:**
+$$
+\min_{G,S,Q}\| M-GSQ^{\top} \|^{2}\quad s.t.\quad G\geq 0, Q^{\top}Q=I
+$$
+
+::: {.notes}
+**G**:
+Since we work on document-term matrices, it would mean that k-means on $X$ is document clustering (document clusters is $G_{g}$) and on $X^{\top}$ is term clustering (term clusters is $G_{f}$).
+
+$G$ is of size $(nd\times k\ell)$, S of size $(k\ell \times_{2}p)$, and $Q$ of size $nd\times_{2}p$, defined as:
+$$
+G=\left[\begin{matrix}
+G^{(n\times k)}_{g} & 0 \\
+0 & G^{(d\times \ell)}_{f}
+\end{matrix}\right]
+$$
+where $G_{g}$ and $G_{f}$ are the label matrices obtained by using k-means on $X$ and $X^{\top}$, respectively.
+
+**S**:
+$$
+S=\left[\begin{matrix}
+S_{g}^{(k\times p)} & \theta_{g}^{(k\times p)} \\
+\theta^{(\ell \times p)}_{f} & S^{\ell \times p}_{f}
+\end{matrix}\right]
+$$
+where $S_{g}=(s_{k'p})$ and $S_{f}=(s_{\ell'p})$ are centroid matrices, while $s_{gk'}$ is a centroid of the $(k')^{th}$ sample cluster for each $k'=1,\dots,k$ and $s_{f\ell'}$ is a centroid of the $(\ell')^{th}$ feature cluster for each $\ell'=1,\dots,\ell$.
+$\theta_{g}$ and $\theta_{f}$ contain non null values and involve mixed information of both samples and features.
+
+
+
+**Q**:
+$$
+Q=\left[\begin{matrix}
+Q^{(n\times p)}_{g} & 0 \\
+0 & Q^{(d\times o)}_{f}
+\end{matrix}\right]
+$$
+- Doing SVD on $X$ gives $U, \Sigma, V$.
+- We truncate those to the first $p$ components to get an optimal rank-p approximation of $X$ (this is a common approach in PCA for dimension reduction – PCA is just a specific application of SVD)
+- We form $Q$ from $Q_{g}=U\Sigma$ and $Q_{f}=V\Sigma$, which captures the principal components for documents & terms respectively.
+
+
+:::
+
+
+
+
+## Algorithm in Action - A Case Study
+
+- **Real-world Application**: Text document clustering.
+- **Process Visualization**:
+    - Starting from a high-dimensional term-document matrix.
+    - Progressively identifying clusters of documents and terms.
+- **Effectiveness**:
+    - Improved clustering accuracy.
+    - Enhanced interpretability of document groupings.
+
+
+## Experimental Results and Analysis
+
+- **Performance Metrics**: Accuracy, NMI, ARI.
+- **Results Summary**:
+    - The SemiNMF-PCA framework often outperforms traditional methods.
+    - Demonstrates robustness across diverse datasets.
+- **Visual Comparison**:
+    - Graphical representation of the framework's performance against other methods.
+
+
+## Critical Evaluation: Limitations
+- Motivation is absent
+- Questionable choices for mathematical terms
+- Clear weakness that they didn't evaluate co-clustering better; but they excuse it with there being no gold standard labels for terms.
+- Unclear whether the method needs parameter tuning specific to the dataset[^fig3], but it somewhat seems that way
+
+[^fig3]: Due to the results in Figure 3.
+
+## Critical Evaluation: Strengths
+- Figures and illustrations were useful
+- The frameworks seems to manage noise well[^pubmed_ev]
+- Integration is well reasoned and grounded in theory
+- Achieved statistically significant increase in performance over state of the art
+
+[^pubmed_ev]: Evident by PUBMED case results
+
+## Critical Evaluation: Additional points
+- Would have liked to see performance over all runs, not just via variance (std dev).
+- Computational complexity is not described; how does it compare to other SoTA algorithms?
+
+
+## Q&A
+
+- Thank you for your attention!
+- I am now ready to answer your questions and discuss further.
 
