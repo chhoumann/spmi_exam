@@ -25,7 +25,7 @@ format:
 It may not reveal the true cluster structure because the first few principal components of PCA may not reflect it.
 :::
 
-# Understanding the SemiNMF-PCA Framework for Sparse Data Co-clustering
+## Understanding the SemiNMF-PCA Framework for Sparse Data Co-clustering
 
 - Semi non-negative matrix factorization (SemiNMF)
 - Principal Component Analysis (PCA) for
@@ -80,7 +80,7 @@ The approximation is the product of these.
 - **Information-Theoretic Co-clustering (ITCC)** 
 - **Spectral Co-clustering Algorithm (SpecCo)**: Appears to perform well on document clustering
 
-## Locality Preserving based Co-clustering
+## Locality Preserving based Co-clustering {.smaller}
 - **Drawback of other methods:** they often overlook local manifold geometry because they mainly rely on global Euclidean geometry
 - **Dual Regularized Co-Clustering (DRCC)**: Combines NMTF with incorporating manifold structures in both sample and feature spaces. Limited in handling data with negative values and has high computational complexity.
 - **Locally Preserved Fast Nonnegative Matrix Tri-Factorization (LpFNMTF)**: Tries to reduce computational demands by enforcing constraints for factors to be cluster indicator matrices
@@ -95,7 +95,7 @@ A 2D manifold is a 2D shape that can be bent and twisted in a higher-dimensional
 **Local Geometrical Structure**: This refers to the shape and connectivity of data points in a small, localized region of the dataset. It's about understanding how data points are arranged or connected to each other in a close neighborhood.
 :::
 
-## SemiNMF
+## SemiNMF {.smaller}
 
 - Semi-nonnegative: 
     - data $X$ and cluster centroids $S$ can be positive and negative, but
