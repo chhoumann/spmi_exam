@@ -190,11 +190,11 @@ $$
 - Create KNN data graph for samples and features: data points connected to k nearest neighbors
     -  Used to represent local proximity/similarity between points, capturing local structure and relationship in data
 - Create weight matrices $W_g$ and $W_f$ from graph: represents connections in data samples and features, respectively
-- Compute normalized graph Laplacians $L_g$ and $L_f$ from $W_g, W_f$ and diagonal matrices of them: used to preserve local relationships and maximize smoothness w.r.t data's intrinsic manifold
+- Compute normalized graph Laplacians $L_g$ and $L_f$ from $W_g, W_f$ and diagonal matrices of them
 
 
 ::: {.notes}
-Graph Laplacian embeds especially supports data lying on non-linear manifolds.
+Graph Laplacian embeds especially supports data lying on non-linear manifolds. They're used to preserve local relationships and maximize smoothness w.r.t data's intrinsic manifold
 
 The graph Laplacian is basically constructed in a way much similar to normal. Normally it's $L = D - A$ where $D$ is a diagonal degree matrix and $A$ is the adjacency matrix.
 In this case, we construct it from the weight matrices (similar to adjacency matrix, but with kn-neighbors) and $D$ is obviously basically the same - but here it's the row sums of the individual weight matrices.
