@@ -185,7 +185,7 @@ $$
 - We form $Q$ from $Q_{g}=U\Sigma$ and $Q_{f}=V\Sigma$, which captures the principal components for documents & terms respectively.
 :::
 
-## Regularized SemiNMF-PCA CoClust
+## Regularized SemiNMF-PCA CoClust {.smaller}
 - Uses graph Laplacian embeddings to account for intrinsic geometric structure
 - Create KNN data graph for samples and features: data points connected to k nearest neighbors
     -  Used to represent local proximity/similarity between points, capturing local structure and relationship in data
@@ -200,7 +200,7 @@ The graph Laplacian is basically constructed in a way much similar to normal. No
 In this case, we construct it from the weight matrices (similar to adjacency matrix, but with kn-neighbors) and $D$ is obviously basically the same - but here it's the row sums of the individual weight matrices.
 :::
 
-## Regularized SemiNMF-PCA CoClust
+## Regularized SemiNMF-PCA CoClust {.smaller}
 Introduce the normalized graph Laplacians in $M$:
 $$
 M=\left[\begin{matrix}
@@ -259,7 +259,7 @@ And then output: Sample indicator matrix $G_{g}=G[1..n,1..k]$, feature indicator
 - Grid search regularization parameter $\alpha$ with $\beta=\alpha0.1$ in grid $(0.01, 0.1, 1, 10, 100, 500, 1000)$
 
 ## Results
-![](static/images/results1.png){fig-align="center"}
+![@allabSemiNMFPCAFrameworkSparse2016](static/images/results1.png){fig-align="center"}
 
 ::: {.notes}
 The empirical evidence suggests that R-SemiNMF-PCA-CoClust often outperforms the compared algorithms.
@@ -274,7 +274,7 @@ The empirical evidence suggests that R-SemiNMF-PCA-CoClust often outperforms the
 :::
 
 ::: {.column width="60%"}
-![](/static/images/results2.png)
+![@allabSemiNMFPCAFrameworkSparse2016](/static/images/results2.png)
 :::
 
 ::::
@@ -293,12 +293,12 @@ It is often used after an ANOVA test when there are multiple groups, to find out
 :::
 
 ## Cluster Visualization
-![](static/images/cstr_results.png)
+![@allabSemiNMFPCAFrameworkSparse2016](static/images/cstr_results.png)
 
 - The method groups clusters to provide clearer separation between them; there's less overlap
 
 ## Regularization parameters {.smaller}
-![](static/images/fig3.png){fig-align="center"}
+![@allabSemiNMFPCAFrameworkSparse2016](static/images/fig3.png){fig-align="center"}
 
 - **CSTR:** Performance increases with increase in $\alpha$
 - **Classic3:** Optimal at $\alpha=10$
@@ -336,7 +336,7 @@ The reason this is separate is because there's no gold standard labels for terms
 :::
 
 ::: {.column width="60%"}
-![](/static/images/pubmed_clusters.png){fig-align="right"}
+![@allabSemiNMFPCAFrameworkSparse2016](/static/images/pubmed_clusters.png){fig-align="right"}
 :::
 
 ::::
@@ -346,12 +346,12 @@ The PUBMED data set contains biomedical abstracts categorized by disease, which 
 :::
 
 ## Results {.smaller}
-![](static/images/pubmed_reorg.png){fig-align="center"}
+![@allabSemiNMFPCAFrameworkSparse2016](static/images/pubmed_reorg.png){fig-align="center"}
 
 Dense bands of variables - terms cited in many docs - considered noise.
 
 ## Results
-![](static/images/pubmed5_terms.png){fig-align="center"}
+![@allabSemiNMFPCAFrameworkSparse2016](static/images/pubmed5_terms.png){fig-align="center"}
 
 - Identified semantically coherent column clusters indicative of document clusters - seems to correspond to diseases
 - Found common terms between different diseases - showing ability to handle overlap and shared features between clusters
