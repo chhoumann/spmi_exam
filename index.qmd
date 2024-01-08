@@ -122,9 +122,9 @@ X^{\top} & 0
 \end{matrix}\right]
 $$
 
-- Create $G$ by doing k-means clustering on $X$ and $X^{\top}$ - represents cluster membership for both samples and features
-- Create $S$ from centroid matrices for samples and features
-- Create $Q$ from components reduced from SVD of $X$
+- Obtain $G$ by doing k-means clustering on $X$ and $X^{\top}$ - represents cluster membership for both samples and features
+- $S$ consists of centroid matrices for samples and features
+- $Q$ contains components reduced from SVD of $X$
 
 **Goal is minimizing:**
 $$
