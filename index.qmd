@@ -95,7 +95,7 @@ A 2D manifold is a 2D shape that can be bent and twisted in a higher-dimensional
 **Local Geometrical Structure**: This refers to the shape and connectivity of data points in a small, localized region of the dataset. It's about understanding how data points are arranged or connected to each other in a close neighborhood.
 :::
 
-## SemiNMF {.smaller}
+## SemiNMF
 
 - Semi-nonnegative: 
     - data $X$ and cluster centroids $S$ can be positive and negative, but
@@ -113,7 +113,7 @@ A 2D manifold is a 2D shape that can be bent and twisted in a higher-dimensional
 :::
 
 
-## SemiNMF-PCA-CoClust
+## SemiNMF-PCA-CoClust {.smaller}
 Form matrix $M$ of size $(n+d)\times(n+d)$ from data $X$:
 $$
 M=\left[\begin{matrix}
