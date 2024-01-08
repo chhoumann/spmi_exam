@@ -173,8 +173,6 @@ $$
 where $S_{g}=(s_{k'p})$ and $S_{f}=(s_{\ell'p})$ are centroid matrices, while $s_{gk'}$ is a centroid of the $(k')^{th}$ sample cluster for each $k'=1,\dots,k$ and $s_{f\ell'}$ is a centroid of the $(\ell')^{th}$ feature cluster for each $\ell'=1,\dots,\ell$.
 $\theta_{g}$ and $\theta_{f}$ contain non null values and involve mixed information of both samples and features.
 
-
-
 **Q**:
 $$
 Q=\left[\begin{matrix}
@@ -185,36 +183,190 @@ $$
 - Doing SVD on $X$ gives $U, \Sigma, V$.
 - We truncate those to the first $p$ components to get an optimal rank-p approximation of $X$ (this is a common approach in PCA for dimension reduction – PCA is just a specific application of SVD)
 - We form $Q$ from $Q_{g}=U\Sigma$ and $Q_{f}=V\Sigma$, which captures the principal components for documents & terms respectively.
+:::
+
+## Regularized SemiNMF-PCA CoClust
+- Uses graph Laplacian embeddings to account for intrinsic geometric structure
+- Create KNN data graph for samples and features: data points connected to k nearest neighbors
+    -  Used to represent local proximity/similarity between points, capturing local structure and relationship in data
+- Create weight matrices $W_g$ and $W_f$ from graph: represents connections in data samples and features, respectively
+- Compute normalized graph Laplacians $L_g$ and $L_f$ from $W_g, W_f$ and diagonal matrices of them: used to preserve local relationships and maximize smoothness w.r.t data's intrinsic manifold
 
 
+::: {.notes}
+Graph Laplacian embeds especially supports data lying on non-linear manifolds.
+
+The graph Laplacian is basically constructed in a way much similar to normal. Normally it's $L = D - A$ where $D$ is a diagonal degree matrix and $A$ is the adjacency matrix.
+In this case, we construct it from the weight matrices (similar to adjacency matrix, but with kn-neighbors) and $D$ is obviously basically the same - but here it's the row sums of the individual weight matrices.
+:::
+
+## Regularized SemiNMF-PCA CoClust
+Introduce the normalized graph Laplacians in $M$:
+$$
+M=\left[\begin{matrix}
+\alpha L_{g} & X \\
+X^{\top} & \beta L_{f}
+\end{matrix}\right]
+$$
+where $\alpha$ and $\beta$ are the trade-off parameters used to govern the contribution of $L_{g}$ and $L_{f}$ respectively.
+
+The minimization problem is of the same form as before, but with updated $M$.
+
+$$
+\min_{G,S,Q}\| M-GSQ^{\top} \|^{2}\quad s.t.\quad G\geq 0, Q^{\top}Q=I
+$$
+
+Optimize by updating $S$, $G$, and then $Q$ repeatedly until convergence.
+
+::: {.notes}
+At this point, they also show how they can decompose the optimization problem shown here into two terms.
+
+$$
+\|M-GSQ^{\top}\|^{2}=\|M-MQQ^{\top}\|^{2}+\|MQ-GS\|^{2}
+$$
+
+The first term is the objective function of PCA (alternate form than the one I show), and the second is the SemiNMF criterion in a low-dimensional subspace.
+
+**Algorithm:**
+Inputs: Data matrix $X$, number of sample and feature classes $k$ and $l$, number of components $p$.
+
+We start by initializing $G$ using spherical [[k-means]] and then $Q$ using SVD.
+
+Then we compute $L_{g}$ and $L_{f}$.
+Construct the matrix $M$.
+And we start the approximation process, which is repeating the following until convergence:
+- Update $S$ by $S=(G^{\top}G)^{-1}G^{\top}MQ$
+- Update $G$ by $G=G\circ \sqrt{ \frac{[MH^{\top}]^{+}+G[HH^{\top}]^{-}}{G[HH^{\top}]^{+}+[MH^{\top}]^{-}} }$ where $H=SQ^{\top}$, $A^{+}$ and $A^{-}$ correspond respectively to positive and negative parts of the matrix $A$ given by $A^{+}_{ik}=\frac{1}{2}(|A_{ik}|+A_{ik})$ and $A^{-}_{ik}=\frac{1}{2}(|A_{ik}-A_{ik})$.
+- Update $Q$ by solving $\min_{Q^{\top}Q=I}\|M-BQ^{\top}\|^{2}$ where $B=GS$.
+
+And then output: Sample indicator matrix $G_{g}=G[1..n,1..k]$, feature indicator matrix $G_{f}=G[n+1..nd, k+1..k\ell]$, and sample embedding matrix $Q_{g}=Q[1..n, 1..p]$.
 :::
 
 
+# Experimental Results and Analysis
+## Performance Metrics
+- Accuracy (Acc): correctness of cluster asignments
+- Normalized Mutual Information (NMI): evaluate mutual information between cluster assignments and true labels
+- Adjusted Radn Index (ARI): Assess similarity between clusterings and ground truth, adjusting for chance
+
+## Data and Parameters
+- Datasets size and sparsity varied across datasets: 
+    - Samples (documents): min=~500, max=~20k
+    - Features (terms): min=~1k, max=~43k
+- Run each method w. different parameter settings 50x
+- Reports best results per metod
+- Used same method to initialize the sample partition (spherical k-means)
+- Grid search regularization parameter $\alpha$ with $\beta=\alpha0.1$ in grid $(0.01, 0.1, 1, 10, 100, 500, 1000)$
+
+## Results
+![](static/images/results1.png){fig-align="center"}
+
+::: {.notes}
+The empirical evidence suggests that R-SemiNMF-PCA-CoClust often outperforms the compared algorithms.
+:::
+
+## Results: Statistical Tests
+:::: {.columns}
+
+::: {.column width="40%"}
+- One-way ANOVA & pairwise t-tests
+- Show statistically significant performance increase over LpFNMTF
+:::
+
+::: {.column width="60%"}
+![](/static/images/results2.png)
+:::
+
+::::
+
+::: {.notes}
+- They only report the best runs. This doesn't account for the variability and stability of the clustering results across runs. What if they took the average? Or remove outlier runs (or top & bottom 2) and took the average then? Could be useful to see the distribution of performances over multiple runs.
+- The variability shown in the standard deviations in table 3 could indicate that could indicate that while R-SemiNMF-PCA-CoClust generally performs better, there is variability that could affect its reliability in certain cases. It's still better than the other algorithm, also visible due to having less variability.
+- But since they report variability, we get (some of) the added context that we desired here.
 
 
-## Algorithm in Action - A Case Study
+**One-way ANOVA (Analysis of Variance)** is used to determine if there are any statistically significant differences between the means of three or more independent (unrelated) groups.
+It compares the variance within groups to the variance between groups to ascertain if any of the group means are significantly different from each other.
 
-- **Real-world Application**: Text document clustering.
-- **Process Visualization**:
-    - Starting from a high-dimensional term-document matrix.
-    - Progressively identifying clusters of documents and terms.
-- **Effectiveness**:
-    - Improved clustering accuracy.
-    - Enhanced interpretability of document groupings.
+**Pairwise t-tests**: used to compare the means of two groups at a time, to identify if they are significantly different from each other.
+It is often used after an ANOVA test when there are multiple groups, to find out which specific pairs of groups have significant differences in their means.
+:::
 
+## Cluster Visualization
+![](static/images/cstr_results.png)
 
-## Experimental Results and Analysis
+- The method groups clusters to provide clearer separation between them; there's less overlap
 
-- **Performance Metrics**: Accuracy, NMI, ARI.
-- **Results Summary**:
-    - The SemiNMF-PCA framework often outperforms traditional methods.
-    - Demonstrates robustness across diverse datasets.
-- **Visual Comparison**:
-    - Graphical representation of the framework's performance against other methods.
+## Regularization parameters {.smaller}
+![](static/images/fig3.png){fig-align="center"}
 
+- **CSTR:** Performance increases with increase in $\alpha$
+- **Classic3:** Optimal at $\alpha=10$
+- **Reviews:** Performance decreases with increase in $\alpha$
+- Choosing optimal parameters for datasets vs. generalization
 
+::: {.notes}
+- **CSTR:** Regularization enforcing certain geometric structures well-aligned with this dataset?
+- **Classic3:** Too much regularization distorts natural clusters / fail to capture relationships?
+- **Reviews:**
+    - Could intrinsic structure in dataset be less aligned with the assumptions made by the regularization?
+    - Authors say due to higher noise in data - or the data's manifold is not well-captured by the chosen form of regularization
+
+This figure makes it evident that they've chosen the optimal parameters for each dataset.
+That calls into question the generalizability of the method.
+If you have to vary your parameter values so much — having to tune them for each dataset — the algorithm may not perform well in practice, where we don't have true labels to guide the tuning.
+:::
+
+# PUBMED
+*To illustate co-clustering capabilities on term clusters*
+
+::: {.notes}
+The reason this is separate is because there's no gold standard labels for terms, but they still wanted to assess term clustering (not just document-clustering, as shown earlier).
+:::
+
+## PUBMED10
+:::: {.columns}
+
+::: {.column width="40%"}
+- Biomedical abstracts categorized by disease
+- Divided into
+    - PUBMED10
+    - PUBMED6
+    - PUBMED5
+:::
+
+::: {.column width="60%"}
+![](/static/images/pubmed_clusters.png){fig-align="right"}
+:::
+
+::::
+
+::: {.notes}
+The PUBMED data set contains biomedical abstracts categorized by disease, which provides a natural grouping for documents and terms.
+:::
+
+## Results {.smaller}
+![](static/images/pubmed_reorg.png){fig-align="center"}
+
+Dense bands of variables - terms cited in many docs - considered noise.
+
+## Results
+![](static/images/pubmed5_terms.png){fig-align="center"}
+
+- Identified semantically coherent column clusters indicative of document clusters - seems to correspond to diseases
+- Found common terms between different diseases - showing ability to handle overlap and shared features between clusters
+
+::: {.notes}
+Dense bands of variables (terms cited in many documents) were considered as noise but did not affect the co-clustering process or the classification of documents and terms.
+:::
+
+## Conclusion
+- Presented framework unifying dimensionality reduction and co-clustering
+- Achieves better performance than previous methods
+
+# Critical Evaluation
 ## Critical Evaluation: Limitations
-- Motivation is absent
+- Motivation is lacking
 - Questionable choices for mathematical terms
 - Clear weakness that they didn't evaluate co-clustering better; but they excuse it with there being no gold standard labels for terms.
 - Unclear whether the method needs parameter tuning specific to the dataset[^fig3], but it somewhat seems that way
