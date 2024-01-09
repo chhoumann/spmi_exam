@@ -97,7 +97,7 @@ The approximation is the product of these.
 
 - Semi-nonnegative: 
     - data $X$ and cluster centroids $S$ can be positive and negative, but
-    - cluster indicator matrix $G$ must be zero or positive: a data point has a non-negative degree of associatio with a cluster
+    - cluster indicator matrix $G$ must be zero or positive: a data point has a non-negative degree of association with a cluster
 - Soft clustering: a point can have partial membership to a cluster
 <!-- - Does not require data factors ($G$ & $S$) to be orthogonal -->
 - Goal is to minimize difference between $X$ and $GS^{\top}$
@@ -206,7 +206,7 @@ M=\left[\begin{matrix}
 X^{\top} & \beta L_{f}
 \end{matrix}\right]
 $$
-where $\alpha$ and $\beta$ are the trade-off parameters used to govern the contribution of $L_{g}$ and $L_{f}$ respectively.
+where $\alpha$ and $\beta$ are the regularization parameters used to control the contribution of $L_{g}$ and $L_{f}$ respectively.
 
 The minimization problem is of the same form as before, but with updated $M$.
 
