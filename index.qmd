@@ -15,14 +15,14 @@ format:
 
 ## The problem
 - Given a large set of documents and their content, how can we group them into topics *and* understand which terms are typically associated?
-- Existing methods struggle with the high-dimensionality and sparsity in document-term matrices, and they may not capture the underlying geometry in the data
+- Existing methods struggle with high-dimensionality and sparsity in document-term matrices, doesn't capture the underlying geometry well
 - Most clustering approaches only focus on documents *or* terms, but not both (unilateral clustering)
-- Using PCA and then k-means clustering (Tandem clustering) is discouraged because it may not reveal the true cluster structure
+- Using PCA and then k-means clustering (Tandem clustering) is discouraged
 
 **Proposed solution:** Integrating SemiNMF and PCA
 
 ::: {.notes}
-It may not reveal the true cluster structure because the first few principal components of PCA may not reflect it.
+Discouraged because it may not reveal the true cluster structure because the first few principal components of PCA may not reflect it.
 :::
 
 ## Understanding the SemiNMF-PCA Framework for Sparse Data Co-clustering
@@ -34,7 +34,7 @@ It may not reveal the true cluster structure because the first few principal com
 
 ## Sparse, High-Dimensional Data
 
-- **Sparse Data**: Dataset where most entries are zero or do not contain much information
+- **Sparse Data**: Dataset where most entries are zero
 - **High Dimensionality**: Datasets with a large number of features (e.g., terms in text dataset)
 - **Key Challenges**:
     - Difficulty in visualizing and understanding the structure
@@ -55,13 +55,13 @@ It may not reveal the true cluster structure because the first few principal com
 - **What is Co-clustering?** 
     - Simultaneous grouping of data points (e.g., documents) and features (e.g., terms).
 - **Why Co-clustering?**
-    - Often more effective than one-sided clustering, especially for sparse, high-dimensional data
-    - Co-clustering better than clustering on sparse data
+    - Often more effective than unilateral clustering, especially for sparse, high-dimensional data
 - **With matrix factorization**
     - NMF for unilateral, then NMTF for co-clustering
 
 ::: {.notes}
 NMTF creates a 3-factor decomposition - creates an approximation of the data matrix through:
+
 - a row-coefficient matrix,
 - a block value matrix,
 - and a column-coefficient matrix – all are nonnegative.
@@ -86,8 +86,6 @@ The approximation is the product of these.
 - **Locally Preserved Fast Nonnegative Matrix Tri-Factorization (LpFNMTF)**: Tries to reduce computational demands by enforcing constraints for factors to be cluster indicator matrices
 
 ::: {.notes}
-A 2D manifold is a 2D shape that can be bent and twisted in a higher-dimensional space.
-
 **Generally, a $d$-dimensional manifold** is a part of an $n$-dimensional space (where $d<n$) that locally resembles a $d$-dimensional hyperplane.
 
 **Basically, "locally resembles"** means that near each point, it looks like it resembles such a plane. So while the whole thing may look 3D, near each point, it looks 2D.
@@ -109,7 +107,7 @@ A 2D manifold is a 2D shape that can be bent and twisted in a higher-dimensional
 
 **Cluster indicator** indicates soft (not binary) membership with clusters for the various points. Higher values means a point is more strongly associated with a given cluster.
 
-**Some matrix factorization methods have constraint that factor matrices (e.g. $G$ or $S$) must be orthogonal** - so the features/clusters are distinct. SemiNMF doesn't require this.
+<!-- **Some matrix factorization methods have constraint that factor matrices (e.g. $G$ or $S$) must be orthogonal** - so the features/clusters are distinct. SemiNMF doesn't require this. -->
 :::
 
 ## PCA
@@ -255,7 +253,7 @@ And then output: Sample indicator matrix $G_{g}=G[1..n,1..k]$, feature indicator
     - Features (terms): min=~1k, max=~43k
 - Run each method w. different parameter settings 50x
 - Reports best results per metod
-- Used same method to initialize the sample partition (spherical k-means)
+<!-- - Used same method to initialize the sample partition (spherical k-means) -->
 - Grid search regularization parameter $\alpha$ with $\beta=\alpha0.1$ in grid $(0.01, 0.1, 1, 10, 100, 500, 1000)$
 
 ## Results
