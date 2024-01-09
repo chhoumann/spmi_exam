@@ -245,7 +245,7 @@ And then output: Sample indicator matrix $G_{g}=G[1..n,1..k]$, feature indicator
 ## Performance Metrics
 - Accuracy (Acc): correctness of cluster asignments
 - Normalized Mutual Information (NMI): evaluate mutual information between cluster assignments and true labels
-- Adjusted Radn Index (ARI): Assess similarity between clusterings and ground truth, adjusting for chance
+- Adjusted Rand Index (ARI): Assess similarity between clusterings and ground truth, adjusting for chance
 
 ## Data and Parameters
 - Datasets size and sparsity varied across datasets: 
