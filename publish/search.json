@@ -1,0 +1,191 @@
+[
+  {
+    "objectID": "index.html#the-problem",
+    "href": "index.html#the-problem",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "The problem",
+    "text": "The problem\n\nGiven a large set of documents and their content, how can we group them into topics and understand which terms are typically associated?\nExisting methods struggle with high-dimensionality and sparsity in document-term matrices, doesn’t capture the underlying geometry well\nMost clustering approaches only focus on documents or terms, but not both (unilateral clustering)\nUsing PCA and then k-means clustering (Tandem clustering) is discouraged\n\nProposed solution: Integrating SemiNMF and PCA\n\nDiscouraged because it may not reveal the true cluster structure because the first few principal components of PCA may not reflect it."
+  },
+  {
+    "objectID": "index.html#understanding-the-seminmf-pca-framework-for-sparse-data-co-clustering",
+    "href": "index.html#understanding-the-seminmf-pca-framework-for-sparse-data-co-clustering",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Understanding the SemiNMF-PCA Framework for Sparse Data Co-clustering",
+    "text": "Understanding the SemiNMF-PCA Framework for Sparse Data Co-clustering\n\nSemi non-negative matrix factorization (SemiNMF)\nPrincipal Component Analysis (PCA) for\nSparse data\nCo-clustering"
+  },
+  {
+    "objectID": "index.html#sparse-high-dimensional-data",
+    "href": "index.html#sparse-high-dimensional-data",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Sparse, High-Dimensional Data",
+    "text": "Sparse, High-Dimensional Data\n\nSparse Data: Dataset where most entries are zero\nHigh Dimensionality: Datasets with a large number of features (e.g., terms in text dataset)\nKey Challenges:\n\nDifficulty in visualizing and understanding the structure\nTraditional clustering methods fall short in capturing the underlying patterns"
+  },
+  {
+    "objectID": "index.html#brief-introduction-to-nmf-and-pca",
+    "href": "index.html#brief-introduction-to-nmf-and-pca",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Brief introduction to NMF and PCA",
+    "text": "Brief introduction to NMF and PCA\n\nNonnegative Matrix Factorization (NMF):\n\nDecomposes data matrices into parts for easier interpretation\nData must be non-negative\n\nPrincipal Component Analysis (PCA):\n\nReduces dimensions while keeping the most important variability"
+  },
+  {
+    "objectID": "index.html#co-clustering",
+    "href": "index.html#co-clustering",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Co-clustering",
+    "text": "Co-clustering\n\nWhat is Co-clustering?\n\nSimultaneous grouping of data points (e.g., documents) and features (e.g., terms).\n\nWhy Co-clustering?\n\nOften more effective than unilateral clustering, especially for sparse, high-dimensional data\n\nWith matrix factorization\n\nNMF for unilateral, then NMTF for co-clustering\n\n\n\nNMTF creates a 3-factor decomposition - creates an approximation of the data matrix through:\n\na row-coefficient matrix,\na block value matrix,\nand a column-coefficient matrix – all are nonnegative.\n\nThe approximation is the product of these."
+  },
+  {
+    "objectID": "index.html#co-clustering-1",
+    "href": "index.html#co-clustering-1",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Co-clustering",
+    "text": "Co-clustering\n\nClustering vs. Co-clustering: Allab, Labiod, and Nadif (2016)"
+  },
+  {
+    "objectID": "index.html#matrix-factorization-based-co-clustering-algorithms",
+    "href": "index.html#matrix-factorization-based-co-clustering-algorithms",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Matrix factorization based co-clustering algorithms",
+    "text": "Matrix factorization based co-clustering algorithms\n\nCroeuc Algorithm: Uses the principle of double k-means to perform co-clustering on continuous data\nBipartite Spectral Graph Partitioning Algorithm (Spec): Designed to be sequel to Croeuc\nInformation-Theoretic Co-clustering (ITCC)\nSpectral Co-clustering Algorithm (SpecCo): Appears to perform well on document clustering"
+  },
+  {
+    "objectID": "index.html#locality-preserving-based-co-clustering",
+    "href": "index.html#locality-preserving-based-co-clustering",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Locality Preserving based Co-clustering",
+    "text": "Locality Preserving based Co-clustering\n\nDrawback of other methods: they often overlook local manifold geometry because they mainly rely on global Euclidean geometry\nDual Regularized Co-Clustering (DRCC): Combines NMTF with incorporating manifold structures in both sample and feature spaces. Limited in handling data with negative values and has high computational complexity.\nLocally Preserved Fast Nonnegative Matrix Tri-Factorization (LpFNMTF): Tries to reduce computational demands by enforcing constraints for factors to be cluster indicator matrices\n\n\nGenerally, a \\(d\\)-dimensional manifold is a part of an \\(n\\)-dimensional space (where \\(d&lt;n\\)) that locally resembles a \\(d\\)-dimensional hyperplane.\nBasically, “locally resembles” means that near each point, it looks like it resembles such a plane. So while the whole thing may look 3D, near each point, it looks 2D.\nLocal Geometrical Structure: This refers to the shape and connectivity of data points in a small, localized region of the dataset. It’s about understanding how data points are arranged or connected to each other in a close neighborhood."
+  },
+  {
+    "objectID": "index.html#seminmf",
+    "href": "index.html#seminmf",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "SemiNMF",
+    "text": "SemiNMF\n\nSemi-nonnegative:\n\ndata \\(X\\) and cluster centroids \\(S\\) can be positive and negative, but\ncluster indicator matrix \\(G\\) must be zero or positive: a data point has a non-negative degree of association with a cluster\n\nSoft clustering: a point can have partial membership to a cluster \nGoal is to minimize difference between \\(X\\) and \\(GS^{\\top}\\)\n\n\nCluster centroid means a representative point that characterizes the central position / typical attribute of a cluster.\nCluster indicator indicates soft (not binary) membership with clusters for the various points. Higher values means a point is more strongly associated with a given cluster."
+  },
+  {
+    "objectID": "index.html#pca",
+    "href": "index.html#pca",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "PCA",
+    "text": "PCA\n\nUsed to find lower-dimensional subspace best representing the data\nDone by identifying principal directions \\(Q\\) and projecting the data points into this new subspace, giving principal components \\(U\\)\nGoal is reconstructing \\(UQ^{\\top}\\) as closely to \\(X\\) as possible, subject to \\(Q^{\\top}Q=I\\) (ensures orthogonality)\n\\(U\\) can be considered continuous analogue to the discrete membership indicators in k-means\n\nThis is the basis for Laplacian embedding integration\n\n\n\nBeing = I means dot product of any pair in Q is 0: they’re orthogonal.\nIt’s important that the principal directions are orthogonal, as they need to capture unique variance, without redundancy.\n\\(U\\) being continuous analogue to discrete membership indicators in k-means basically just refers to the membership indicators in k-means being binary (in or not in cluster), whereas being continuous would make it partial membership."
+  },
+  {
+    "objectID": "index.html#seminmf-pca-coclust",
+    "href": "index.html#seminmf-pca-coclust",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "SemiNMF-PCA-CoClust",
+    "text": "SemiNMF-PCA-CoClust\nForm matrix \\(M\\) of size \\((n+d)\\times(n+d)\\) from data \\(X\\): \\[\nM=\\left[\\begin{matrix}\n0 & X \\\\\nX^{\\top} & 0\n\\end{matrix}\\right]\n\\]\n\nObtain \\(G\\) by doing k-means clustering on \\(X\\) and \\(X^{\\top}\\) - represents cluster membership for both samples and features\n\\(S\\) consists of centroid matrices for samples and features\n\\(Q\\) contains components reduced from SVD of \\(X\\)\n\nGoal is minimizing: \\[\n\\min_{G,S,Q}\\| M-GSQ^{\\top} \\|^{2}\\quad s.t.\\quad G\\geq 0, Q^{\\top}Q=I\n\\]\n\nThe optimization is about minimizing the Frobenius Norm of the difference between \\(M\\) and the product \\(GSQ^{\\top}\\), subject to \\(G\\) being non-negative and \\(Q^{\\top}Q=I\\) to ensure orthogonality in \\(Q\\).\nFrobenius norm measures sum of squared differences between data and reconstruction.\nG: Since we work on document-term matrices, it would mean that k-means on \\(X\\) is document clustering (document clusters is \\(G_{g}\\)) and on \\(X^{\\top}\\) is term clustering (term clusters is \\(G_{f}\\)).\n\\(G\\) is of size \\((nd\\times k\\ell)\\), S of size \\((k\\ell \\times_{2}p)\\), and \\(Q\\) of size \\(nd\\times_{2}p\\), defined as: \\[\nG=\\left[\\begin{matrix}\nG^{(n\\times k)}_{g} & 0 \\\\\n0 & G^{(d\\times \\ell)}_{f}\n\\end{matrix}\\right]\n\\] where \\(G_{g}\\) and \\(G_{f}\\) are the label matrices obtained by using k-means on \\(X\\) and \\(X^{\\top}\\), respectively.\nS: \\[\nS=\\left[\\begin{matrix}\nS_{g}^{(k\\times p)} & \\theta_{g}^{(k\\times p)} \\\\\n\\theta^{(\\ell \\times p)}_{f} & S^{\\ell \\times p}_{f}\n\\end{matrix}\\right]\n\\] where \\(S_{g}=(s_{k'p})\\) and \\(S_{f}=(s_{\\ell'p})\\) are centroid matrices, while \\(s_{gk'}\\) is a centroid of the \\((k')^{th}\\) sample cluster for each \\(k'=1,\\dots,k\\) and \\(s_{f\\ell'}\\) is a centroid of the \\((\\ell')^{th}\\) feature cluster for each \\(\\ell'=1,\\dots,\\ell\\). \\(\\theta_{g}\\) and \\(\\theta_{f}\\) contain non null values and involve mixed information of both samples and features.\nQ: \\[\nQ=\\left[\\begin{matrix}\nQ^{(n\\times p)}_{g} & 0 \\\\\n0 & Q^{(d\\times o)}_{f}\n\\end{matrix}\\right]\n\\] - Doing SVD on \\(X\\) gives \\(U, \\Sigma, V\\). - We truncate those to the first \\(p\\) components to get an optimal rank-p approximation of \\(X\\) (this is a common approach in PCA for dimension reduction – PCA is just a specific application of SVD) - We form \\(Q\\) from \\(Q_{g}=U\\Sigma\\) and \\(Q_{f}=V\\Sigma\\), which captures the principal components for documents & terms respectively."
+  },
+  {
+    "objectID": "index.html#regularized-seminmf-pca-coclust",
+    "href": "index.html#regularized-seminmf-pca-coclust",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Regularized SemiNMF-PCA CoClust",
+    "text": "Regularized SemiNMF-PCA CoClust\n\nUses graph Laplacian embeddings to account for intrinsic geometric structure\nCreate KNN data graph for samples and features: data points connected to k nearest neighbors\n\nUsed to represent local proximity/similarity between points, capturing local structure and relationship in data\n\nCreate weight matrices \\(W_g\\) and \\(W_f\\) from graph: represents connections in data samples and features, respectively\nCompute normalized graph Laplacians \\(L_g\\) and \\(L_f\\) from \\(W_g, W_f\\) and diagonal matrices of them\n\n\nGraph Laplacian embeds especially supports data lying on non-linear manifolds. They’re used to preserve local relationships and maximize smoothness w.r.t data’s intrinsic manifold\nThe graph Laplacian is basically constructed in a way much similar to normal. Normally it’s \\(L = D - A\\) where \\(D\\) is a diagonal degree matrix and \\(A\\) is the adjacency matrix. In this case, we construct it from the weight matrices (similar to adjacency matrix, but with kn-neighbors) and \\(D\\) is obviously basically the same - but here it’s the row sums of the individual weight matrices."
+  },
+  {
+    "objectID": "index.html#regularized-seminmf-pca-coclust-1",
+    "href": "index.html#regularized-seminmf-pca-coclust-1",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Regularized SemiNMF-PCA CoClust",
+    "text": "Regularized SemiNMF-PCA CoClust\nIntroduce the normalized graph Laplacians in \\(M\\): \\[\nM=\\left[\\begin{matrix}\n\\alpha L_{g} & X \\\\\nX^{\\top} & \\beta L_{f}\n\\end{matrix}\\right]\n\\] where \\(\\alpha\\) and \\(\\beta\\) are the regularization parameters used to control the contribution of \\(L_{g}\\) and \\(L_{f}\\) respectively.\nThe minimization problem is of the same form as before, but with updated \\(M\\).\n\\[\n\\min_{G,S,Q}\\| M-GSQ^{\\top} \\|^{2}\\quad s.t.\\quad G\\geq 0, Q^{\\top}Q=I\n\\]\nOptimize by updating \\(S\\), \\(G\\), and then \\(Q\\) repeatedly until convergence.\n\nAt this point, they also show how they can decompose the optimization problem shown here into two terms.\n\\[\n\\|M-GSQ^{\\top}\\|^{2}=\\|M-MQQ^{\\top}\\|^{2}+\\|MQ-GS\\|^{2}\n\\]\nThe first term is the objective function of PCA (alternate form than the one I show), and the second is the SemiNMF criterion in a low-dimensional subspace.\nAlgorithm: Inputs: Data matrix \\(X\\), number of sample and feature classes \\(k\\) and \\(l\\), number of components \\(p\\).\nWe start by initializing \\(G\\) using spherical [[k-means]] and then \\(Q\\) using SVD.\nThen we compute \\(L_{g}\\) and \\(L_{f}\\). Construct the matrix \\(M\\). And we start the approximation process, which is repeating the following until convergence: - Update \\(S\\) by \\(S=(G^{\\top}G)^{-1}G^{\\top}MQ\\) - Update \\(G\\) by \\(G=G\\circ \\sqrt{ \\frac{[MH^{\\top}]^{+}+G[HH^{\\top}]^{-}}{G[HH^{\\top}]^{+}+[MH^{\\top}]^{-}} }\\) where \\(H=SQ^{\\top}\\), \\(A^{+}\\) and \\(A^{-}\\) correspond respectively to positive and negative parts of the matrix \\(A\\) given by \\(A^{+}_{ik}=\\frac{1}{2}(|A_{ik}|+A_{ik})\\) and \\(A^{-}_{ik}=\\frac{1}{2}(|A_{ik}-A_{ik})\\). - Update \\(Q\\) by solving \\(\\min_{Q^{\\top}Q=I}\\|M-BQ^{\\top}\\|^{2}\\) where \\(B=GS\\).\nAnd then output: Sample indicator matrix \\(G_{g}=G[1..n,1..k]\\), feature indicator matrix \\(G_{f}=G[n+1..nd, k+1..k\\ell]\\), and sample embedding matrix \\(Q_{g}=Q[1..n, 1..p]\\)."
+  },
+  {
+    "objectID": "index.html#performance-metrics",
+    "href": "index.html#performance-metrics",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Performance Metrics",
+    "text": "Performance Metrics\n\nAccuracy (Acc): correctness of cluster asignments\nNormalized Mutual Information (NMI): evaluate mutual information between cluster assignments and true labels\nAdjusted Rand Index (ARI): Assess similarity between clusterings and ground truth, adjusting for chance"
+  },
+  {
+    "objectID": "index.html#data-and-parameters",
+    "href": "index.html#data-and-parameters",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Data and Parameters",
+    "text": "Data and Parameters\n\nDatasets size and sparsity varied across datasets:\n\nSamples (documents): min=~500, max=~20k\nFeatures (terms): min=~1k, max=~43k\n\nRun each method w. different parameter settings 50x\nReports best results per metod \nGrid search regularization parameter \\(\\alpha\\) with \\(\\beta=\\alpha0.1\\) in grid \\((0.01, 0.1, 1, 10, 100, 500, 1000)\\)"
+  },
+  {
+    "objectID": "index.html#results",
+    "href": "index.html#results",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Results",
+    "text": "Results\n\nAllab, Labiod, and Nadif (2016)\nThe empirical evidence suggests that R-SemiNMF-PCA-CoClust often outperforms the compared algorithms."
+  },
+  {
+    "objectID": "index.html#results-statistical-tests",
+    "href": "index.html#results-statistical-tests",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Results: Statistical Tests",
+    "text": "Results: Statistical Tests\n\n\n\nOne-way ANOVA & pairwise t-tests\nShow statistically significant performance increase over LpFNMTF\n\n\n\n\n\nAllab, Labiod, and Nadif (2016)\n\n\n\n\n\n\nThey only report the best runs. This doesn’t account for the variability and stability of the clustering results across runs. What if they took the average? Or remove outlier runs (or top & bottom 2) and took the average then? Could be useful to see the distribution of performances over multiple runs.\nThe variability shown in the standard deviations in table 3 could indicate that could indicate that while R-SemiNMF-PCA-CoClust generally performs better, there is variability that could affect its reliability in certain cases. It’s still better than the other algorithm, also visible due to having less variability.\nBut since they report variability, we get (some of) the added context that we desired here.\n\nOne-way ANOVA (Analysis of Variance) is used to determine if there are any statistically significant differences between the means of three or more independent (unrelated) groups. It compares the variance within groups to the variance between groups to ascertain if any of the group means are significantly different from each other.\nPairwise t-tests: used to compare the means of two groups at a time, to identify if they are significantly different from each other. It is often used after an ANOVA test when there are multiple groups, to find out which specific pairs of groups have significant differences in their means."
+  },
+  {
+    "objectID": "index.html#cluster-visualization",
+    "href": "index.html#cluster-visualization",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Cluster Visualization",
+    "text": "Cluster Visualization\n\nAllab, Labiod, and Nadif (2016)\nThe method groups clusters to provide clearer separation between them; there’s less overlap"
+  },
+  {
+    "objectID": "index.html#regularization-parameters",
+    "href": "index.html#regularization-parameters",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Regularization parameters",
+    "text": "Regularization parameters\n\nAllab, Labiod, and Nadif (2016)\nCSTR: Performance increases with increase in \\(\\alpha\\)\nClassic3: Optimal at \\(\\alpha=10\\)\nReviews: Performance decreases with increase in \\(\\alpha\\)\nChoosing optimal parameters for datasets vs. generalization\n\n\n\nCSTR: Regularization enforcing certain geometric structures well-aligned with this dataset?\nClassic3: Too much regularization distorts natural clusters / fail to capture relationships?\nReviews:\n\nCould intrinsic structure in dataset be less aligned with the assumptions made by the regularization?\nAuthors say due to higher noise in data - or the data’s manifold is not well-captured by the chosen form of regularization\n\n\nThis figure makes it evident that they’ve chosen the optimal parameters for each dataset. That calls into question the generalizability of the method. If you have to vary your parameter values so much — having to tune them for each dataset — the algorithm may not perform well in practice, where we don’t have true labels to guide the tuning."
+  },
+  {
+    "objectID": "index.html#pubmed10",
+    "href": "index.html#pubmed10",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "PUBMED10",
+    "text": "PUBMED10\n\n\n\nBiomedical abstracts categorized by disease\nDivided into\n\nPUBMED10\nPUBMED6\nPUBMED5\n\n\n\n\n\n\nAllab, Labiod, and Nadif (2016)\n\n\n\n\n\nThe PUBMED data set contains biomedical abstracts categorized by disease, which provides a natural grouping for documents and terms."
+  },
+  {
+    "objectID": "index.html#results-1",
+    "href": "index.html#results-1",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Results",
+    "text": "Results\n\nAllab, Labiod, and Nadif (2016)Dense bands of variables - terms cited in many docs - considered noise."
+  },
+  {
+    "objectID": "index.html#results-2",
+    "href": "index.html#results-2",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Results",
+    "text": "Results\n\nAllab, Labiod, and Nadif (2016)\nIdentified semantically coherent column clusters indicative of document clusters - seems to correspond to diseases\nFound common terms between different diseases - showing ability to handle overlap and shared features between clusters\n\n\nDense bands of variables (terms cited in many documents) were considered as noise but did not affect the co-clustering process or the classification of documents and terms."
+  },
+  {
+    "objectID": "index.html#conclusion",
+    "href": "index.html#conclusion",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Conclusion",
+    "text": "Conclusion\n\nPresented framework unifying dimensionality reduction and co-clustering\nAchieves better performance than previous methods"
+  },
+  {
+    "objectID": "index.html#critical-evaluation-limitations",
+    "href": "index.html#critical-evaluation-limitations",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Critical Evaluation: Limitations",
+    "text": "Critical Evaluation: Limitations\n\nMotivation is lacking\nQuestionable choices for mathematical terms\nClear weakness that they didn’t evaluate co-clustering better; but they excuse it with there being no gold standard labels for terms.\nUnclear whether the method needs parameter tuning specific to the dataset1, but it somewhat seems that way\n\nDue to the results in Figure 3."
+  },
+  {
+    "objectID": "index.html#critical-evaluation-strengths",
+    "href": "index.html#critical-evaluation-strengths",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Critical Evaluation: Strengths",
+    "text": "Critical Evaluation: Strengths\n\nFigures and illustrations were useful\nThe frameworks seems to manage noise well1\nIntegration is well reasoned and grounded in theory\nAchieved statistically significant increase in performance over state of the art\n\nEvident by PUBMED case results"
+  },
+  {
+    "objectID": "index.html#critical-evaluation-additional-points",
+    "href": "index.html#critical-evaluation-additional-points",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Critical Evaluation: Additional points",
+    "text": "Critical Evaluation: Additional points\n\nWould have liked to see performance over all runs, not just via variance (std dev).\nComputational complexity is not described; how does it compare to other SoTA algorithms?"
+  },
+  {
+    "objectID": "index.html#qa",
+    "href": "index.html#qa",
+    "title": "SemiNMF-PCA framework for Sparse Data Co-clustering",
+    "section": "Q&A",
+    "text": "Q&A\n\nThank you for your attention!\nI am now ready to answer your questions and discuss further.\n\n\n\n\n\n\n\nAllab, Kais, Lazhar Labiod, and Mohamed Nadif. 2016. “SemiNMF-PCA Framework for Sparse Data Co-clustering.” In Proceedings of the 25th ACM International on Conference on Information and Knowledge Management, 347–56. CIKM ’16. New York, NY, USA: Association for Computing Machinery. https://doi.org/10.1145/2983323.2983707."
+  }
+]
